@@ -25,14 +25,17 @@ public class ChatServer {
     }
 
     public static void startInBackground(int port) {
-        try (ServerSocket socket = new ServerSocket(port)) {
-            Thread t = new Thread(() -> acceptLoop(socket), "chat-server-accept");
-            t.setDaemon(true);
-            t.start();
-            System.out.println("Chat server listening on port " + port);
+        ServerSocket socket;
+        try {
+            socket = new ServerSocket(port);
         } catch (IOException e) {
-            System.out.println("Exception occurs: " + e.getMessage());
+            System.out.println("Server not started on port " + port + ": " + e.getMessage());
+            return;
         }
+        Thread t = new Thread(() -> acceptLoop(socket), "chat-server-accept");
+        t.setDaemon(true);
+        t.start();
+        System.out.println("Chat server listening on port " + port);
     }
 
     private static void acceptLoop(ServerSocket serverSocket) {
