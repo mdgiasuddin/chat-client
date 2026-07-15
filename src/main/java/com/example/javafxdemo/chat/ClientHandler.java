@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 final class ClientHandler extends Thread {
 
     private final Socket socket;
-    private BufferedReader in;
     private PrintWriter out;
     private String username;
 
@@ -23,7 +22,7 @@ final class ClientHandler extends Thread {
     @Override
     public void run() {
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
             String line;
             while ((line = in.readLine()) != null) {
