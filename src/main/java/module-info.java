@@ -12,5 +12,6 @@ module com.example.javafxdemo {
     requires com.almasb.fxgl.all;
 
     opens com.example.javafxdemo to javafx.fxml;
+    opens com.example.javafxdemo.chat to javafx.fxml;
     exports com.example.javafxdemo;
 }
