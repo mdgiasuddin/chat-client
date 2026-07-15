@@ -11,19 +11,12 @@ public class ChatServer {
     public static final int DEFAULT_PORT = 5555;
     static final Map<String, ClientHandler> CLIENTS = new ConcurrentHashMap<>();
 
-    @SuppressWarnings("resource")
-    public static void startInBackground(int port) {
-        ServerSocket socket;
-        try {
-            socket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.out.println("Server not started on port " + port + ": " + e.getMessage());
-            return;
+    public static void main(String[] args) throws IOException {
+        int port = args.length > 0 ? Integer.parseInt(args[0]) : DEFAULT_PORT;
+        try (ServerSocket socket = new ServerSocket(port)) {
+            System.out.println("Chat server listening on port " + port);
+            acceptLoop(socket);
         }
-        Thread t = new Thread(() -> acceptLoop(socket), "chat-server-accept");
-        t.setDaemon(true);
-        t.start();
-        System.out.println("Chat server listening on port " + port);
     }
 
     private static void acceptLoop(ServerSocket serverSocket) {

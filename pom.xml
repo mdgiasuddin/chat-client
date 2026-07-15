@@ -142,6 +142,13 @@
                             <noHeaderFiles>true</noHeaderFiles>
                         </configuration>
                     </execution>
+                    <execution>
+                        <!-- Run the chat server with: mvn javafx:run@server -->
+                        <id>server</id>
+                        <configuration>
+                            <mainClass>com.example.javafxdemo/com.example.javafxdemo.chat.ChatServer</mainClass>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
