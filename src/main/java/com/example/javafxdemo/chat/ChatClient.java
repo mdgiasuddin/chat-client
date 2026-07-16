@@ -6,28 +6,29 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ChatClient {
 
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
     public void connect(String host, int port) throws IOException {
         socket = new Socket(host, port);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
+        writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8), true);
     }
 
     public String readLine() throws IOException {
-        return in.readLine();
+        return reader.readLine();
     }
 
     public void send(String msg) {
-        if (out != null) {
-            out.println(msg);
+        if (writer != null) {
+            writer.println(msg);
         }
     }
 
@@ -35,7 +36,7 @@ public class ChatClient {
         Thread t = new Thread(() -> {
             try {
                 String line;
-                while ((line = in.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     onMessage.accept(line);
                 }
             } catch (IOException ignored) {
