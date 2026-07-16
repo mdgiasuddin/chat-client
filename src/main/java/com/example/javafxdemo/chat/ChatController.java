@@ -77,6 +77,7 @@ public class ChatController {
     }
 
     private void onServerMessage(String line) {
+        System.out.println("Message from Server: " + line);
         Platform.runLater(() -> handleServerMessage(line));
     }
 
